@@ -2,7 +2,7 @@
  * 平云山居 · C端网络请求封装（对接 RuoYi 后端 /app 接口）
  * 生产环境请将 BASE_URL 改为正式域名（小程序需在后台配置 request 合法域名）
  */
-export const BASE_URL = 'http://localhost:8081'
+export const BASE_URL = 'http://xiyu.oksja.cn'
 
 export default function request(options) {
 	return new Promise((resolve, reject) => {
