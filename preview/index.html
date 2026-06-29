@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>平云山居 设计校验</title>
+<style>
+  :root{
+    --brand:#C1272D; --brand-deep:#9E1B22; --brand-soft:#E8484F; --wash:#FCEDEE;
+    --gold:#C9A24B; --gold-deep:#A87E2E; --ink:#1C1C1E; --ink2:#4A4A4F; --ink3:#8A8A90; --ink4:#B5B5BC;
+    --line:#EFEFF2; --bg:#F4F4F6; --card:#fff;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;}
+  body{background:#5a5a5e;padding:24px;display:flex;gap:24px;flex-wrap:wrap;align-items:flex-start;}
+  .frame{width:390px;background:var(--bg);border-radius:18px;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.4);}
+  .sec-label{background:#222;color:#fff;font-size:12px;padding:6px 14px;letter-spacing:1px;}
+  .pad{padding:14px;}
+  /* icon gallery */
+  .igrid{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;padding:14px;background:#fff;}
+  .icell{display:flex;flex-direction:column;align-items:center;gap:5px;}
+  .ibox{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,#FDEEEF,#FBE0E2);display:flex;align-items:center;justify-content:center;}
+  .ico{display:inline-block;background-size:100% 100%;background-repeat:no-repeat;}
+  .iname{font-size:9px;color:var(--ink3);}
+  /* posters */
+  .prow{display:flex;gap:12px;padding:14px;}
+  .poster{position:relative;width:160px;height:160px;border-radius:14px;overflow:hidden;}
+  .pbg-red{background:radial-gradient(130% 90% at 50% -10%,#D8333A,#BC1F26 52%,#8F1219);}
+  .pbg-wine{background:radial-gradient(130% 90% at 50% -10%,#B0303C,#8C1E2C 52%,#5E1320);}
+  .pbg-gold{background:radial-gradient(130% 90% at 50% -10%,#E7CB8C,#C9A24B 52%,#9A7322);}
+  .ptex{position:absolute;inset:0;opacity:.5;background-image:radial-gradient(circle at center,rgba(255,228,160,.18) 1px,transparent 2px);background-size:17px 17px;}
+  .pframe{position:absolute;inset:9px;border:1px solid rgba(240,214,150,.5);border-radius:8px;display:flex;flex-direction:column;align-items:center;justify-content:center;}
+  .pbrand{font-size:9px;color:#F3DCA0;letter-spacing:.5px;margin-bottom:5px;}
+  .pmain{font-size:30px;font-weight:800;color:#FCE7BE;text-shadow:0 1px 3px rgba(90,10,10,.45);}
+  .poster.gold .pmain{color:#6B3E12;}
+  .poster.gold .pbrand{color:#6B3E12;}
+  .psub{font-size:12px;color:#FFF4DD;padding:2px 12px;border-radius:99px;background:rgba(255,255,255,.12);border:1px solid rgba(240,214,150,.4);margin-top:8px;}
+  .pcor{position:absolute;width:11px;height:11px;border:1px solid rgba(240,214,150,.7);}
+  .pcor.tl{top:6px;left:6px;border-right:0;border-bottom:0;} .pcor.tr{top:6px;right:6px;border-left:0;border-bottom:0;}
+  .pcor.bl{bottom:6px;left:6px;border-right:0;border-top:0;} .pcor.br{bottom:6px;right:6px;border-left:0;border-top:0;}
+  /* scenes */
+  .scenes{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;padding:14px;}
+  .scene{height:90px;border-radius:10px;position:relative;overflow:hidden;}
+  .ssheen{position:absolute;inset:0;background:linear-gradient(125deg,rgba(255,255,255,.35),rgba(255,255,255,0) 38%),linear-gradient(0deg,rgba(0,0,0,.1),transparent 40%);}
+  /* home composite */
+  .banner{margin:12px 14px;height:160px;border-radius:14px;position:relative;overflow:hidden;}
+  .bcontent{position:absolute;left:18px;bottom:20px;}
+  .btag{font-size:10px;color:rgba(255,255,255,.85);letter-spacing:1.5px;}
+  .btitle{font-size:22px;font-weight:800;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.35);}
+  .bsub{font-size:12px;color:rgba(255,255,255,.92);}
+  .entries{display:flex;margin:8px 14px;padding:18px 6px;background:#fff;border-radius:14px;box-shadow:0 4px 16px rgba(0,0,0,.05);}
+  .entry{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;}
+  .etile{width:48px;height:48px;border-radius:14px;background:linear-gradient(135deg,#FDEEEF,#FBE0E2);display:flex;align-items:center;justify-content:center;}
+  .ename{font-size:12px;color:var(--ink2);font-weight:600;}
+  .promo{display:flex;margin:12px 14px;padding:10px;background:#fff;border-radius:14px;box-shadow:0 4px 16px rgba(0,0,0,.05);}
+  .pp{width:120px;height:120px;border-radius:8px;overflow:hidden;position:relative;flex-shrink:0;}
+  .rib{position:absolute;top:0;left:0;font-size:9px;color:#fff;background:linear-gradient(135deg,#E8484F,#9E1B22);padding:2px 8px;border-radius:8px 0 8px 0;}
+  .pinfo{flex:1;padding-left:11px;display:flex;flex-direction:column;}
+  .ptitle{font-size:13px;font-weight:600;line-height:1.4;}
+  .loc{font-size:11px;color:var(--ink4);margin-top:6px;}
+  .pbuy{margin-top:auto;display:flex;align-items:flex-end;justify-content:space-between;}
+  .price{display:inline-flex;align-items:baseline;color:var(--brand);font-weight:800;}
+  .price .c{font-size:12px;} .price .n{font-size:22px;} .old{font-size:12px;color:var(--ink4);text-decoration:line-through;margin-left:6px;}
+  .btn{display:inline-flex;align-items:center;justify-content:center;height:30px;padding:0 14px;border-radius:99px;font-size:12px;font-weight:600;color:#fff;background:linear-gradient(135deg,#E8484F,#9E1B22);box-shadow:0 5px 12px rgba(193,39,45,.28);}
+  /* member header */
+  .mh{position:relative;padding:14px 14px 36px;}
+  .mhbg{position:absolute;inset:0;background:linear-gradient(160deg,#C92B32,#A81C24 55%,#8C141C);}
+  .mhbg::after{content:"";position:absolute;inset:0;opacity:.25;background:radial-gradient(circle at 85% 0,rgba(255,220,170,.5),transparent 45%);}
+  .mhrow{position:relative;display:flex;align-items:center;padding:8px 2px 16px;}
+  .av{width:55px;height:55px;border-radius:50%;background:linear-gradient(135deg,#F4DCA4,#D6AE63);color:#7A4F18;font-size:23px;font-weight:800;display:flex;align-items:center;justify-content:center;border:1.5px solid rgba(255,255,255,.7);}
+  .mhinfo{flex:1;padding-left:12px;}
+  .mhname{font-size:19px;font-weight:800;color:#fff;display:flex;align-items:center;gap:8px;}
+  .lv{font-size:10px;color:#6B3E12;background:linear-gradient(135deg,#F4DCA4,#D6AE63);padding:2px 7px;border-radius:99px;}
+  .mhid{font-size:11px;color:rgba(255,255,255,.8);margin-top:5px;}
+  .vb{position:relative;display:flex;align-items:center;background:linear-gradient(100deg,#2A1112,#4A1A1C);border:1px solid rgba(240,214,150,.4);border-radius:9px;padding:11px 13px;}
+  .vbl{font-size:24px;font-weight:800;color:#F0D696;}
+  .vbc{flex:1;padding-left:11px;} .vbt{font-size:15px;font-weight:800;color:#F6E3B6;letter-spacing:1px;} .vbs{font-size:10px;color:rgba(246,227,182,.7);margin-top:3px;}
+  .vbgo{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,#F4DCA4,#CFA456);color:#6B3E12;font-size:14px;font-weight:800;display:flex;align-items:center;justify-content:center;}
+  .assets{display:flex;align-items:center;margin:-24px 14px 0;position:relative;padding:17px 0;background:#fff;border-radius:14px;box-shadow:0 8px 30px rgba(0,0,0,.08);}
+  .asset{flex:1;display:flex;flex-direction:column;align-items:center;}
+  .anum{font-size:22px;font-weight:800;} .alab{font-size:11px;color:var(--ink3);margin-top:4px;} .adiv{width:1px;height:28px;background:var(--line);}
+  /* gold loyalty card */
+  .mcard{position:relative;height:145px;margin:16px 30px;border-radius:12px;overflow:hidden;background:linear-gradient(135deg,#EBD9AC,#CBA559 38%,#B68F3C 60%,#DBC489);box-shadow:0 8px 18px rgba(150,110,40,.3);padding:17px 18px;}
+  .mcsheen{position:absolute;inset:0;background:linear-gradient(125deg,rgba(255,255,255,.55),rgba(255,255,255,0) 30%,rgba(255,255,255,.25) 55%,rgba(255,255,255,0) 75%);}
+  .mctop{position:relative;text-align:right;font-size:13px;font-weight:700;color:#5A3E14;letter-spacing:2px;}
+  .mcen{position:relative;font-size:32px;font-weight:800;color:#4A3210;letter-spacing:4px;margin-top:10px;}
+  .mcpg{font-size:10px;color:rgba(74,50,16,.7);letter-spacing:3px;margin-top:5px;}
+  .mcfoot{position:absolute;left:18px;right:18px;bottom:15px;display:flex;justify-content:space-between;align-items:flex-end;}
+  .mclv{font-size:15px;font-weight:800;color:#4A3210;} .mcid{font-size:11px;color:rgba(74,50,16,.65);}
+  /* coupon */
+  .cp{position:relative;display:flex;background:#fff;border-radius:12px;margin:12px 14px;box-shadow:0 8px 30px rgba(0,0,0,.08);overflow:hidden;}
+  .cpl{width:110px;background:linear-gradient(135deg,#E8484F,#BC1F26);color:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:18px 0;}
+  .cpl.dead{background:linear-gradient(135deg,#C7C7CC,#A8A8AE);}
+  .cpamt .c{font-size:15px;font-weight:700;} .cpamt .n{font-size:38px;font-weight:800;} .cpcond{font-size:10px;margin-top:6px;}
+  .cpc{flex:1;padding:13px 12px;border-left:1px dashed #ECECEF;}
+  .cpt{font-size:13px;font-weight:700;} .cpd{font-size:11px;color:var(--ink4);margin-top:4px;} .cpv{font-size:10px;color:var(--ink4);margin-top:4px;}
+  .cpr{display:flex;align-items:center;padding-right:12px;}
+  .stamp{font-size:11px;color:var(--ink4);background:var(--bg);padding:5px 9px;border-radius:99px;}
+  .notch{position:absolute;left:103px;width:14px;height:14px;border-radius:50%;background:var(--bg);}
+  .notch.t{top:-7px;} .notch.b{bottom:-7px;}
+</style>
+</head>
+<body>
+<div class="frame">
+  <div class="sec-label">① 图标库（验证全部手写 SVG 路径）</div>
+  <div class="igrid" id="igrid"></div>
+  <div class="sec-label">② 海报组件 红 / 酒红 / 金</div>
+  <div class="prow">
+    <div class="poster"><div class="pbg-red"></div><div class="ptex"></div><div class="pframe"><div class="pbrand">平云山居</div><div class="pmain">¥688</div><div class="psub">8-10人 · 超值套餐</div></div><i class="pcor tl"></i><i class="pcor tr"></i><i class="pcor bl"></i><i class="pcor br"></i></div>
+    <div class="poster"><div class="pbg-wine"></div><div class="ptex"></div><div class="pframe"><div class="pbrand">平云山居</div><div class="pmain">¥4298</div><div class="psub">15间 · 高级客房套票</div></div><i class="pcor tl"></i><i class="pcor tr"></i><i class="pcor bl"></i><i class="pcor br"></i></div>
+    <div class="poster gold"><div class="pbg-gold"></div><div class="ptex"></div><div class="pframe"><div class="pbrand">平云山居</div><div class="pmain">VIP</div><div class="psub">储值尊享</div></div><i class="pcor tl"></i><i class="pcor tr"></i><i class="pcor bl"></i><i class="pcor br"></i></div>
+  </div>
+  <div class="sec-label">③ 场景渐变图（房型/商品）</div>
+  <div class="scenes" id="scenes"></div>
+</div>
+
+<div class="frame">
+  <div class="sec-label">④ 首页合成</div>
+  <div class="banner" id="banner"><div class="ssheen" style="position:absolute;inset:0;background:linear-gradient(115deg,rgba(255,255,255,.28),transparent 45%),linear-gradient(0deg,rgba(0,0,0,.28),transparent 55%)"></div>
+    <div class="bcontent"><div class="btag">PINGYUNSHANJU · 平云山居</div><div class="btitle">618 周年庆</div><div class="bsub">客房券套餐 低至 4 折</div></div></div>
+  <div class="entries" id="entries"></div>
+  <div class="promo">
+    <div class="pp"><div class="poster" style="width:100%;height:100%"><div class="pbg-red"></div><div class="ptex"></div><div class="pframe"><div class="pbrand">平云山居</div><div class="pmain" style="font-size:26px">¥4298</div><div class="psub" style="font-size:10px">15间·高级客房</div></div><i class="pcor tl"></i><i class="pcor tr"></i><i class="pcor bl"></i><i class="pcor br"></i></div><div class="rib">随机立减</div></div>
+    <div class="pinfo"><div class="ptitle">618周年庆典丨¥4298享15间高级客房房券套餐！低至4折</div>
+      <div class="loc" id="loc">📍 广州 | 平云山居</div>
+      <div class="pbuy"><div class="price"><span class="c">¥</span><span class="n">4298</span><span class="old">¥7470</span></div><div class="btn">立即购买</div></div></div>
+  </div>
+</div>
+
+<div class="frame">
+  <div class="sec-label">⑤ 会员中心头部 + 资产卡</div>
+  <div class="mh"><div class="mhbg"></div>
+    <div class="mhrow"><div class="av">彭</div><div class="mhinfo"><div class="mhname">彭程<span class="lv">储值卡专享</span></div><div class="mhid">会员 ID 304464073</div></div></div>
+    <div class="vb"><div class="vbl">¥</div><div class="vbc"><div class="vbt">会员储值尊享好礼</div><div class="vbs">— "储"即发 · 充值送豪礼 —</div></div><div class="vbgo">GO</div></div>
+  </div>
+  <div class="assets"><div class="asset"><div class="anum">12860</div><div class="alab">积分</div></div><div class="adiv"></div><div class="asset"><div class="anum">6</div><div class="alab">优惠券</div></div><div class="adiv"></div><div class="asset"><div class="anum">5320</div><div class="alab">储值余额</div></div></div>
+  <div class="sec-label" style="margin-top:14px">⑥ 金色会员卡</div>
+  <div class="mcard"><div class="mcsheen"></div><div class="mctop">会员卡</div><div class="mcen">LOYALTY</div><div class="mcpg">P · R · O · G · R · A · M</div><div class="mcfoot"><div class="mclv">钻石会员</div><div class="mcid">NO. 304464073</div></div></div>
+  <div class="sec-label">⑦ 优惠券</div>
+  <div class="cp"><div class="cpl"><div class="cpamt"><span class="c">¥</span><span class="n">100</span></div><div class="cpcond">满¥101可用</div></div><div class="notch t"></div><div class="notch b"></div>
+    <div class="cpc"><div class="cpt">庆中秋，共团圆丨平云山居通用券</div><div class="cpd">每间夜可用一个 | 限部分房型</div><div class="cpv">有效期至 2026-12-31 23:59</div></div>
+    <div class="cpr"><div class="btn" style="height:28px">去使用</div></div></div>
+  <div class="cp"><div class="cpl dead"><div class="cpamt"><span class="c">¥</span><span class="n">100</span></div><div class="cpcond">满¥101可用</div></div><div class="notch t"></div><div class="notch b"></div>
+    <div class="cpc"><div class="cpt" style="color:#8A8A90">庆中秋，共团圆丨平云山居</div><div class="cpd">每间夜可用一个 | 限部分房型</div><div class="cpv">2022-11-14 23:59</div></div>
+    <div class="cpr"><div class="stamp">等级不符</div></div></div>
+  <div style="height:14px"></div>
+</div>
+
+<script>
+const ICONS = {
+	bed:`<path d="M2 5v14"/><path d="M2 9h16a3 3 0 0 1 3 3v7"/><path d="M2 16h19"/><path d="M6 9v6"/>`,
+	dish:`<path d="M4 18h16"/><path d="M5 18a7 7 0 0 1 14 0"/><path d="M12 8V5"/><path d="M10 5h4"/>`,
+	card:`<rect x="2.5" y="5.5" width="19" height="13" rx="2.5"/><path d="M2.5 10h19"/><path d="M6 14.5h4"/>`,
+	crown:`<path d="M5 18.5h14l1.4-9.5-4.7 3.6L12 6 8.3 12.6 3.6 9z" fill="COLOR" stroke="none"/><path d="M5 18.5h14"/><circle cx="12" cy="9.5" r="1" fill="COLOR" stroke="none"/>`,
+	coin:`<circle cx="12" cy="12" r="8.6"/><path d="M9 9l3 3 3-3"/><path d="M12 12v4"/><path d="M9.6 13.4h4.8"/><path d="M9.6 11.2h4.8"/>`,
+	up:`<circle cx="12" cy="12" r="8.6"/><path d="M12 16.2V8.4"/><path d="M8.4 12 12 8.4l3.6 3.6"/>`,
+	clock:`<circle cx="12" cy="12" r="8.6"/><path d="M12 7.4V12l3 1.9"/>`,
+	heart:`<path d="M12 20.3C5.4 16 4 12 4 9.5A3.8 3.8 0 0 1 12 7a3.8 3.8 0 0 1 8 2.5c0 2.5-1.4 6.5-8 10.8z" fill="COLOR" stroke="none"/>`,
+	wifi:`<path d="M4.5 11.5a11 11 0 0 1 15 0"/><path d="M7.5 14.7a6.5 6.5 0 0 1 9 0"/><circle cx="12" cy="18.5" r="1.3" fill="COLOR" stroke="none"/>`,
+	car:`<path d="M4.5 14l1.6-5.2A2 2 0 0 1 8 7.4h8a2 2 0 0 1 1.9 1.4L19.5 14"/><rect x="3" y="13.5" width="18" height="4.2" rx="1.8"/><circle cx="8" cy="18.6" r="1.7" fill="COLOR" stroke="none"/><circle cx="16" cy="18.6" r="1.7" fill="COLOR" stroke="none"/>`,
+	gift:`<rect x="4" y="10.5" width="16" height="9" rx="1.5"/><path d="M3 10.5h18v3.2H3z"/><path d="M12 10.5v9"/><path d="M12 10.5C12 8 10.8 6 8.8 6a2 2 0 0 0 0 4.5"/><path d="M12 10.5C12 8 13.2 6 15.2 6a2 2 0 0 1 0 4.5"/>`,
+	doc:`<path d="M6.5 3.5h7l4 4v13h-11z"/><path d="M13.5 3.5v4h4"/><path d="M9 13h6"/><path d="M9 16h6"/><path d="M9 10h3"/>`,
+	wallet:`<rect x="3" y="6" width="18" height="13" rx="2.6"/><path d="M3 10h18"/><circle cx="16.5" cy="14.5" r="1.4" fill="COLOR" stroke="none"/>`,
+	ticket:`<path d="M4 8.5a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2 1.8 1.8 0 0 0 0 3.6V15a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2v-2.9a1.8 1.8 0 0 0 0-3.6z"/><path d="M13.5 6.5v11" stroke-dasharray="1.6 2"/>`,
+	list:`<path d="M8.5 6.5h11"/><path d="M8.5 12h11"/><path d="M8.5 17.5h11"/><circle cx="4.5" cy="6.5" r="1.3" fill="COLOR" stroke="none"/><circle cx="4.5" cy="12" r="1.3" fill="COLOR" stroke="none"/><circle cx="4.5" cy="17.5" r="1.3" fill="COLOR" stroke="none"/>`,
+	user:`<circle cx="12" cy="8.2" r="3.8"/><path d="M5 20a7 7 0 0 1 14 0"/>`,
+	share:`<circle cx="6" cy="12" r="2.4"/><circle cx="17" cy="6.2" r="2.4"/><circle cx="17" cy="17.8" r="2.4"/><path d="M8.1 10.9 14.9 7.3"/><path d="M8.1 13.1l6.8 3.6"/>`,
+	phone:`<path d="M6 3.5h2.6l1.5 4.6-1.9 1.4a11 11 0 0 0 4.8 4.8l1.4-1.9 4.6 1.5V18a2 2 0 0 1-2 2A15.5 15.5 0 0 1 4 5.5a2 2 0 0 1 2-2z"/>`,
+	location:`<path d="M12 21s-6-5.2-6-10a6 6 0 0 1 12 0c0 4.8-6 10-6 10z"/><circle cx="12" cy="11" r="2.2"/>`,
+	filter:`<path d="M4 6.5h16"/><path d="M7 12h10"/><path d="M10 17.5h4"/>`,
+	search:`<circle cx="11" cy="11" r="6"/><path d="M19.5 19.5l-4.2-4.2"/>`,
+	plus:`<path d="M12 5.5v13"/><path d="M5.5 12h13"/>`, minus:`<path d="M5.5 12h13"/>`,
+	check:`<path d="M5 12.5 10 17.5 19.5 7"/>`, close:`<path d="M6 6l12 12"/><path d="M18 6 6 18"/>`,
+	arrow:`<path d="M9 5.5l6.5 6.5L9 18.5"/>`,
+	star:`<path d="M12 3.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L12 17l-5.2 2.6 1-5.8L3.5 9.7l5.9-.9z" fill="COLOR" stroke="none"/>`,
+	edit:`<path d="M5 19h14"/><path d="M14.5 5.5l4 4-9.5 9.5H5v-4z"/>`,
+	shield:`<path d="M12 3l7.5 3.2v5.3c0 4.8-3.2 8.5-7.5 10.7C7.7 20 4.5 16.3 4.5 11.5V6.2z"/><path d="M9 12l2 2 4.2-4.2"/>`,
+	calendar:`<rect x="3.5" y="5" width="17" height="15.5" rx="2.4"/><path d="M3.5 9.5h17"/><path d="M8 3v4"/><path d="M16 3v4"/>`,
+	store:`<path d="M4 10.5V19h16v-8.5"/><path d="M3 6.5h18l-1.3 4.2a2.7 2.7 0 0 1-5.2-.4 2.7 2.7 0 0 1-5 0 2.7 2.7 0 0 1-5.2.4z"/><path d="M9.5 19v-4h5v4"/>`,
+	hot:`<path d="M12 3c1 3-1 4.5-1 6.5a3 3 0 0 0 3 3c1.5 0 2.5-1 2.5-2.5 2 1.8 2.5 4 1.5 6.2A7 7 0 0 1 5.5 13C5.5 8 9 6 12 3z" fill="COLOR" stroke="none"/>`,
+	tag:`<path d="M12.5 3.5H19a1.5 1.5 0 0 1 1.5 1.5v6.5a2 2 0 0 1-.6 1.4l-7 7a2 2 0 0 1-2.8 0l-5-5a2 2 0 0 1 0-2.8l7-7a2 2 0 0 1 1.4-.6z"/><circle cx="16" cy="8" r="1.3" fill="COLOR" stroke="none"/>`
+};
+function icon(name,size,color,stroke){
+  stroke=stroke||1.7;
+  const inner=(ICONS[name]||'').replace(/COLOR/g,color);
+  const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="${color}" stroke-width="${stroke}" stroke-linecap="round" stroke-linejoin="round">${inner}</svg>`;
+  const el=document.createElement('span');el.className='ico';
+  el.style.width=size+'px';el.style.height=size+'px';
+  el.style.backgroundImage=`url("data:image/svg+xml,${encodeURIComponent(svg)}")`;
+  return el;
+}
+// gallery
+const ig=document.getElementById('igrid');
+Object.keys(ICONS).forEach(n=>{
+  const c=document.createElement('div');c.className='icell';
+  const b=document.createElement('div');b.className='ibox';
+  b.appendChild(icon(n,24,'#C1272D',1.7));
+  const t=document.createElement('div');t.className='iname';t.textContent=n;
+  c.appendChild(b);c.appendChild(t);ig.appendChild(c);
+});
+// scenes
+const grads=[
+ 'linear-gradient(135deg,#A9C9E8,#C9B6D8 45%,#E8C9B0)',
+ 'linear-gradient(135deg,#D8C0A8,#C8B0C0 50%,#A0B8C8)',
+ 'linear-gradient(135deg,#C9A878,#A88060 50%,#6A5848)',
+ 'linear-gradient(135deg,#3A4A6A,#6A5878 50%,#A87858)',
+ 'linear-gradient(135deg,#E89B4A,#C85838)',
+ 'linear-gradient(135deg,#2A2A4A,#5A3A5A 60%,#A85858)',
+ 'linear-gradient(135deg,#E8C878,#B8862B)',
+ 'linear-gradient(135deg,#E8B0B0,#C87878)'
+];
+const sc=document.getElementById('scenes');
+const sicons=['bed','bed','bed','bed','dish','card','gift','ticket'];
+grads.forEach((g,i)=>{const d=document.createElement('div');d.className='scene';d.style.background=g;
+  const sh=document.createElement('div');sh.className='ssheen';d.appendChild(sh);
+  const w=icon(sicons[i],36,'rgba(255,255,255,0.55)',1.4);w.style.position='absolute';w.style.right='8px';w.style.bottom='8px';d.appendChild(w);
+  sc.appendChild(d);});
+// banner bg
+document.getElementById('banner').style.background='linear-gradient(135deg,#8AA8D8,#B89AC8)';
+// entries
+const ent=[['bed','客房预订'],['dish','餐饮预订'],['card','储值有礼'],['crown','会员中心']];
+const ee=document.getElementById('entries');
+ent.forEach(([ic,nm])=>{const e=document.createElement('div');e.className='entry';
+  const t=document.createElement('div');t.className='etile';t.appendChild(icon(ic,25,'#C1272D',1.6));
+  const n=document.createElement('div');n.className='ename';n.textContent=nm;
+  e.appendChild(t);e.appendChild(n);ee.appendChild(e);});
+// loc icon
+const lc=document.getElementById('loc');lc.textContent='';lc.style.display='flex';lc.style.alignItems='center';lc.style.gap='3px';
+lc.appendChild(icon('location',13,'#B5B5BC',1.8));const lt=document.createElement('span');lt.textContent='广州 | 平云山居';lc.appendChild(lt);
+</script>
+</body>
+</html>

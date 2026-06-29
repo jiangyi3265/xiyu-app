@@ -1,0 +1,112 @@
+{
+	"easycom": {
+		"autoscan": true,
+		"custom": {
+			"^lwf-(.*)": "@/components/lwf-$1/lwf-$1.vue"
+		}
+	},
+	"pages": [
+		{
+			"path": "pages/login/login",
+			"style": {
+				"navigationBarTitleText": "登录",
+				"navigationStyle": "custom"
+			}
+		},
+		{
+			"path": "pages/index/index",
+			"style": {
+				"navigationBarTitleText": "平云山居",
+				"navigationBarBackgroundColor": "#C1272D",
+				"navigationBarTextStyle": "white",
+				"enablePullDownRefresh": false
+			}
+		},
+		{
+			"path": "pages/rooms/rooms",
+			"style": { "navigationBarTitleText": "客房预订" }
+		},
+		{
+			"path": "pages/room-detail/room-detail",
+			"style": { "navigationBarTitleText": "房型详情" }
+		},
+		{
+			"path": "pages/dining/dining",
+			"style": { "navigationBarTitleText": "餐饮预订" }
+		},
+		{
+			"path": "pages/recharge/recharge",
+			"style": { "navigationBarTitleText": "储值有礼" }
+		},
+		{
+			"path": "pages/product-detail/product-detail",
+			"style": { "navigationBarTitleText": "详情" }
+		},
+		{
+			"path": "pages/checkout/checkout",
+			"style": { "navigationBarTitleText": "确认订单" }
+		},
+		{
+			"path": "pages/order/order",
+			"style": {
+				"navigationBarTitleText": "全部订单",
+				"navigationBarBackgroundColor": "#FFFFFF",
+				"navigationBarTextStyle": "black"
+			}
+		},
+		{
+			"path": "pages/order-detail/order-detail",
+			"style": { "navigationBarTitleText": "订单详情" }
+		},
+		{
+			"path": "pages/member/member",
+			"style": {
+				"navigationBarTitleText": "会员中心",
+				"navigationBarBackgroundColor": "#C1272D",
+				"navigationBarTextStyle": "white"
+			}
+		},
+		{
+			"path": "pages/benefits/benefits",
+			"style": { "navigationBarTitleText": "会员权益" }
+		},
+		{
+			"path": "pages/profile/profile",
+			"style": { "navigationBarTitleText": "个人资料" }
+		},
+		{
+			"path": "pages/points/points",
+			"style": { "navigationBarTitleText": "积分明细" }
+		},
+		{
+			"path": "pages/coupons/coupons",
+			"style": { "navigationBarTitleText": "优惠券" }
+		},
+		{
+			"path": "pages/points-mall/points-mall",
+			"style": {
+				"navigationBarTitleText": "积分商城",
+				"navigationBarBackgroundColor": "#2B2B30",
+				"navigationBarTextStyle": "white"
+			}
+		}
+	],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"navigationBarTitleText": "平云山居",
+		"navigationBarBackgroundColor": "#FFFFFF",
+		"backgroundColor": "#F4F4F6"
+	},
+	"tabBar": {
+		"color": "#9A9AA0",
+		"selectedColor": "#C1272D",
+		"backgroundColor": "#FFFFFF",
+		"borderStyle": "white",
+		"list": [
+			{ "pagePath": "pages/index/index", "text": "首页", "iconPath": "static/tabbar/home.png", "selectedIconPath": "static/tabbar/home-on.png" },
+			{ "pagePath": "pages/order/order", "text": "订单", "iconPath": "static/tabbar/order.png", "selectedIconPath": "static/tabbar/order-on.png" },
+			{ "pagePath": "pages/member/member", "text": "我的", "iconPath": "static/tabbar/user.png", "selectedIconPath": "static/tabbar/user-on.png" }
+		]
+	},
+	"uniIdRouter": {}
+}

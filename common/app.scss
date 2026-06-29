@@ -1,0 +1,126 @@
+/* ============================================================
+   平云山居 — 全局样式 (在 App.vue 中 @import，作用于所有页面)
+   ============================================================ */
+
+page {
+	background: $bg;
+	color: $ink;
+	font-size: 28rpx;
+	font-family: -apple-system, "PingFang SC", "Helvetica Neue", "Microsoft YaHei", sans-serif;
+	-webkit-font-smoothing: antialiased;
+}
+
+view, text, image, scroll-view, navigator { box-sizing: border-box; }
+
+/* ---------- 布局 ---------- */
+.page-wrap { min-height: 100vh; padding-bottom: env(safe-area-inset-bottom); }
+.pad { padding: 24rpx 28rpx; }
+.row { display: flex; flex-direction: row; align-items: center; }
+.col { display: flex; flex-direction: column; }
+.between { display: flex; flex-direction: row; align-items: center; justify-content: space-between; }
+.center { display: flex; align-items: center; justify-content: center; }
+.wrap { flex-wrap: wrap; }
+.fill { flex: 1; min-width: 0; }
+.gap-s { gap: 12rpx; }
+.gap { gap: 20rpx; }
+
+/* ---------- 卡片 ---------- */
+.card {
+	background: $card;
+	border-radius: $r-lg;
+	box-shadow: $shadow;
+	overflow: hidden;
+}
+.card-pad { padding: 28rpx; }
+.shadow { box-shadow: $shadow; }
+.shadow-sm { box-shadow: $shadow-sm; }
+
+/* ---------- 文字 ---------- */
+.t-title { font-size: 32rpx; font-weight: 700; color: $ink; letter-spacing: .5rpx; }
+.t-sub   { font-size: 24rpx; color: $ink-3; }
+.bold { font-weight: 700; }
+.muted { color: $ink-3; }
+.faint { color: $ink-4; }
+.ink2 { color: $ink-2; }
+.brand-c { color: $brand; }
+.gold-c { color: $gold-deep; }
+.ellipsis { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.ellipsis-2 {
+	overflow: hidden; text-overflow: ellipsis;
+	display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2;
+}
+
+/* ---------- 分割线 ---------- */
+.hr { height: 1px; background: $line; }
+.hr-dash { height: 0; border-top: 1px dashed #E2E2E6; }
+
+/* ---------- 按钮 ---------- */
+.btn {
+	display: inline-flex; align-items: center; justify-content: center;
+	padding: 0 32rpx; height: 72rpx; line-height: 1;
+	border-radius: 999rpx; font-size: 28rpx; font-weight: 600;
+	transition: transform .08s ease, opacity .15s ease;
+}
+.btn::after { border: none; }       /* 去掉 button 默认边框 */
+.btn-primary {
+	color: #fff;
+	background: linear-gradient(135deg, $brand-soft, $brand-deep);
+	box-shadow: $shadow-red;
+}
+.btn-gold {
+	color: #5A3D12;
+	background: linear-gradient(135deg, $gold-light, $gold);
+	box-shadow: 0 10rpx 24rpx rgba(201,162,75,.3);
+}
+.btn-ghost {
+	color: $brand; background: #fff; border: 2rpx solid rgba(193,39,45,.4);
+}
+.btn-dark { color:#fff; background: linear-gradient(135deg,#3A3A3E,#1F1F22); }
+.btn-block { display: flex; width: 100%; height: 88rpx; border-radius: $r; }
+.btn-sm { height: 56rpx; padding: 0 26rpx; font-size: 24rpx; }
+.btn:active { transform: scale(.97); opacity: .92; }
+.btn[disabled] { opacity: .45; }
+
+/* ---------- 徽章 / 标签 ---------- */
+.badge {
+	display: inline-flex; align-items: center; padding: 0 14rpx; height: 36rpx;
+	font-size: 20rpx; font-weight: 600; border-radius: 8rpx 0 8rpx 0;
+	color: #fff; background: linear-gradient(135deg, $brand-soft, $brand);
+	letter-spacing: .5rpx;
+}
+.tag {
+	display: inline-flex; align-items: center; padding: 4rpx 14rpx;
+	font-size: 20rpx; border-radius: 8rpx;
+	color: $brand; background: $brand-wash;
+}
+.tag-line {
+	display: inline-flex; align-items: center; padding: 3rpx 12rpx;
+	font-size: 20rpx; border-radius: 6rpx; color: $ink-3;
+	border: 1px solid $line;
+}
+.tag-gold { color: $gold-deep; background: rgba(201,162,75,.12); }
+
+/* ---------- 价格 ---------- */
+.price { display: inline-flex; align-items: baseline; color: $brand; font-weight: 800; }
+.price .cur { font-size: 24rpx; margin-right: 2rpx; }
+.price .num { font-size: 44rpx; line-height: 1; font-family: "DIN Alternate","Helvetica Neue",sans-serif; }
+.price .suf { font-size: 22rpx; font-weight: 500; color: $ink-3; margin-left: 6rpx; }
+.price-old { font-size: 24rpx; color: $ink-4; text-decoration: line-through; margin-left: 12rpx; }
+
+/* ---------- 区块标题 ---------- */
+.sec-head { display: flex; align-items: center; justify-content: center; margin: 36rpx 0 24rpx; }
+.sec-head .line { width: 40rpx; height: 2rpx; background: linear-gradient(90deg, transparent, $gold); }
+.sec-head .line.r { background: linear-gradient(90deg, $gold, transparent); }
+.sec-head .txt { font-size: 32rpx; font-weight: 700; color: $ink; margin: 0 20rpx; letter-spacing: 4rpx; }
+.sec-head .sub { font-size: 22rpx; color: $ink-4; margin-left: 12rpx; }
+
+.sec-bar { display:flex; align-items:center; margin: 32rpx 28rpx 20rpx; }
+.sec-bar .bar { width: 8rpx; height: 30rpx; border-radius: 4rpx; background: linear-gradient(180deg,$brand-soft,$brand); margin-right: 16rpx; }
+.sec-bar .t { font-size: 32rpx; font-weight: 700; }
+.sec-bar .more { margin-left:auto; font-size: 24rpx; color: $ink-4; }
+
+/* ---------- 通用：可点击反馈 ---------- */
+.tap:active { opacity: .7; }
+
+/* ---------- 安全区底部占位 ---------- */
+.safe-bottom { height: calc(env(safe-area-inset-bottom) + 20rpx); }
