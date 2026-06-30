@@ -2,7 +2,10 @@
 	<view class="page-wrap" v-if="d">
 		<!-- 商品 -->
 		<view class="card prod">
-			<view class="prod-img"><lwf-scene :scene="d.scene" :icon="sceneIcon" :iconSize="70" /></view>
+			<view class="prod-img">
+				<image v-if="d.coverUrl" class="prod-photo" :src="d.coverUrl" mode="aspectFill" />
+				<lwf-scene v-else :scene="d.scene" :icon="sceneIcon" :iconSize="70" />
+			</view>
 			<view class="prod-c">
 				<text class="prod-t ellipsis-2">{{ d.title }}</text>
 				<text class="prod-d">{{ d.desc }}</text>
@@ -174,6 +177,7 @@ export default {
 <style lang="scss">
 .prod { display: flex; margin: 24rpx 28rpx 0; padding: 24rpx; }
 .prod-img { width: 150rpx; height: 150rpx; border-radius: $r; overflow: hidden; flex-shrink: 0; }
+.prod-photo { width: 100%; height: 100%; display: block; }
 .prod-c { flex: 1; min-width: 0; padding-left: 22rpx; display: flex; flex-direction: column; }
 .prod-t { font-size: 28rpx; font-weight: 600; line-height: 1.45; }
 .prod-d { font-size: 23rpx; color: $ink-4; margin-top: 8rpx; }

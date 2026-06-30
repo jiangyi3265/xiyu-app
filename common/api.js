@@ -1,7 +1,7 @@
 /**
  * 平云山居 · C端 API（含字段适配：后端 camelCase → 前端原有数据形状）
  */
-import request from './request.js'
+import request, { BASE_URL } from './request.js'
 
 /**
  * 唤起微信支付（小程序）。后端 needPay=true 时把返回的 pay 参数传进来。
@@ -35,12 +35,17 @@ const params = data => Object.keys(data).reduce((o, k) => {
 	if (validParam(data[k])) o[k] = String(data[k]).trim()
 	return o
 }, {})
+const assetUrl = url => {
+	if (!url) return ''
+	const s = String(url)
+	return /^(https?:)?\/\//.test(s) ? s : BASE_URL + s
+}
 
 /* ---------- 适配器 ---------- */
 const normBanner = b => ({ id: b.bannerId, scene: b.scene, title: b.title, sub: b.sub })
 const normRoom = r => ({
 	id: r.roomId, name: r.name, area: r.area, bed: r.bed, win: r.win,
-	price: Number(r.price), scene: scn(r.scene), tags: csv(r.tags),
+	price: Number(r.price), coverUrl: assetUrl(r.coverUrl), scene: scn(r.scene), tags: csv(r.tags),
 	feature: r.feature, cancel: r.cancelRule, facilities: csv(r.facilities)
 })
 const normProduct = p => ({

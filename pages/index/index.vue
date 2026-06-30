@@ -63,7 +63,10 @@
 		</view>
 		<scroll-view scroll-x class="hscroll" :show-scrollbar="false">
 			<view class="hroom" v-for="r in rooms" :key="r.id" @tap="openRoom(r)">
-				<view class="hroom-img"><lwf-scene :scene="r.scene" icon="bed" :iconSize="90" /></view>
+				<view class="hroom-img">
+					<image v-if="r.coverUrl" class="hroom-photo" :src="r.coverUrl" mode="aspectFill" />
+					<lwf-scene v-else :scene="r.scene" icon="bed" :iconSize="90" />
+				</view>
 				<view class="hroom-b">
 					<text class="hroom-n ellipsis">{{ r.name }}</text>
 					<text class="hroom-s">{{ r.area }}㎡ · {{ r.bed }}</text>
@@ -166,7 +169,8 @@ export default {
 /* 横滑客房 */
 .hscroll { white-space: nowrap; padding: 6rpx 28rpx 24rpx; }
 .hroom { display: inline-block; width: 300rpx; margin-right: 22rpx; background: $card; border-radius: $r-lg; box-shadow: $shadow; overflow: hidden; vertical-align: top; }
-.hroom-img { width: 100%; height: 200rpx; }
+.hroom-img { width: 100%; height: 200rpx; overflow: hidden; }
+.hroom-photo { width: 100%; height: 100%; display: block; }
 .hroom-b { padding: 18rpx 20rpx 22rpx; }
 .hroom-n { display: block; font-size: 27rpx; font-weight: 700; }
 .hroom-s { display: block; font-size: 21rpx; color: $ink-4; margin: 8rpx 0 12rpx; }

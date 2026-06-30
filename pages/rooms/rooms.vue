@@ -34,7 +34,14 @@
 
 		<view class="pad-x">
 			<view class="room card" v-for="r in list" :key="r.id" @tap="open(r)">
-				<view class="room-img"><lwf-scene :scene="r.scene" icon="bed" :iconSize="130" :label="r.name" :note="r.area + '㎡ · ' + r.bed" /></view>
+				<view class="room-img">
+					<image v-if="r.coverUrl" class="room-photo" :src="r.coverUrl" mode="aspectFill" />
+					<lwf-scene v-else :scene="r.scene" icon="bed" :iconSize="130" :label="r.name" :note="r.area + '㎡ · ' + r.bed" />
+					<view v-if="r.coverUrl" class="room-mask">
+						<text class="room-name">{{ r.name }}</text>
+						<text class="room-note">{{ r.area }}㎡ · {{ r.bed }}</text>
+					</view>
+				</view>
 				<view class="room-foot">
 					<view class="tags">
 						<text class="tag" v-for="t in r.tags" :key="t">{{ t }}</text>
@@ -158,7 +165,11 @@ export default {
 .chip.filter text { margin-left: 6rpx; color: $ink-3; }
 
 .room { margin-bottom: 28rpx; }
-.room-img { width: 100%; height: 340rpx; }
+.room-img { position: relative; width: 100%; height: 340rpx; overflow: hidden; }
+.room-photo { width: 100%; height: 100%; display: block; }
+.room-mask { position: absolute; left: 0; right: 0; bottom: 0; padding: 96rpx 24rpx 24rpx; background: linear-gradient(180deg, transparent, rgba(0,0,0,.68)); }
+.room-name { display: block; font-size: 30rpx; line-height: 1.2; color: #fff; font-weight: 800; text-shadow: 0 2rpx 8rpx rgba(0,0,0,.35); }
+.room-note { display: block; margin-top: 8rpx; font-size: 22rpx; line-height: 1.2; color: rgba(255,255,255,.92); }
 .room-foot { padding: 22rpx 24rpx; }
 .tags { display: flex; gap: 12rpx; margin-bottom: 16rpx; }
 .room-buy { display: flex; align-items: flex-end; justify-content: space-between; }

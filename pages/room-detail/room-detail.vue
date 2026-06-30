@@ -1,6 +1,9 @@
 <template>
 	<view class="page-wrap" v-if="room">
-		<view class="hero"><lwf-scene :scene="room.scene" icon="bed" :iconSize="200" /></view>
+		<view class="hero">
+			<image v-if="room.coverUrl" class="hero-photo" :src="room.coverUrl" mode="aspectFill" />
+			<lwf-scene v-else :scene="room.scene" icon="bed" :iconSize="200" />
+		</view>
 
 		<view class="sheet">
 			<view class="rt-head">
@@ -84,6 +87,7 @@ export default {
 			const dateDesc = this.checkIn ? `${this.checkIn} 入住 · ` : ''
 			store.setDraft({
 				scene: this.room.scene,
+				coverUrl: this.room.coverUrl,
 				kind: 'room',
 				roomId: this.room.id,
 				checkIn: this.checkIn,
@@ -101,7 +105,8 @@ export default {
 </script>
 
 <style lang="scss">
-.hero { width: 100%; height: 460rpx; }
+.hero { width: 100%; height: 460rpx; overflow: hidden; }
+.hero-photo { width: 100%; height: 100%; display: block; }
 .sheet {
 	position: relative; margin-top: -40rpx; background: $card;
 	border-radius: $r-xl $r-xl 0 0; padding: 36rpx 32rpx 28rpx; box-shadow: $shadow;
