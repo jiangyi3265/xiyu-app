@@ -36,7 +36,9 @@ export const ORDER_TABS = [
 	{ key: 'pay', name: '待支付' },
 	{ key: 'confirm', name: '待确认' },
 	{ key: 'use', name: '待使用' },
+	{ key: 'refund_apply', name: '退款中' },
 	{ key: 'expired', name: '已过期' },
+	{ key: 'refund', name: '已退款' },
 	{ key: 'cancel', name: '已取消' }
 ]
 

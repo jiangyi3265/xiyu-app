@@ -89,12 +89,16 @@ export default {
 		money(n) { return Number(n).toFixed(2) },
 		oIcon(o) { return o.scene === 'dine' ? 'dish' : (o.scene === 'mooncake' ? 'gift' : (o.scene === 'coupon' ? 'ticket' : 'bed')) },
 		actions(o) {
+			if (o.kind === 'balance_refund') {
+				return ['refund_apply', 'refund_reject', 'refund'].includes(o.status) ? [] : ['删除订单']
+			}
+			if (o.kind === 'recharge' && o.status === 'use') return ['申请余额退款']
 			const m = {
 				done: [o.reviewed ? '已评价' : '去评价', '删除订单'],
-				use: ['去退款', '去使用'],
+				use: ['申请退款', '去使用'],
 				pay: ['取消', '去支付'],
 				confirm: ['联系客服'],
-				cancel: ['删除订单'],
+				cancel: ['删除订单'], refund_apply: ['联系客服'], refund_reject: ['联系客服'],
 				refund: ['删除订单'],
 				expired: ['删除订单']
 			}
@@ -147,11 +151,15 @@ export default {
 				})
 				return
 			}
-			if (a === '去退款' || a === '退款') {
-				uni.showModal({ title: '申请退款', content: '确认申请退款该订单？', confirmText: '确认退款', success: r => {
+			if (a === '申请余额退款') {
+				this.applyBalanceRefund()
+				return
+			}
+			if (a === '申请退款' || a === '退款') {
+				uni.showModal({ title: '申请退款', content: '提交后需商家审核，审核通过后原路退回微信支付金额。', confirmText: '提交申请', success: r => {
 					if (r.confirm) {
 						api.refundOrder(o.oid).then(() => {
-							uni.showToast({ title: '退款成功', icon: 'success' })
+							uni.showToast({ title: '已提交申请', icon: 'success' })
 							this.load()
 						}).catch(() => {})
 					}
@@ -171,6 +179,28 @@ export default {
 				return
 			}
 			uni.showToast({ title: a, icon: 'none' })
+		},
+		applyBalanceRefund() {
+			api.rechargeRefundInfo().then(info => {
+				const max = Number(info.maxAmount || 0)
+				if (max <= 0) { uni.showToast({ title: '暂无可退储值本金', icon: 'none' }); return }
+				uni.showModal({
+					title: '申请储值退款',
+					editable: true,
+					placeholderText: `最多可退 ${max.toFixed(2)} 元`,
+					content: `最多可退 ¥${max.toFixed(2)}\n赠送金额、赠券和赠送权益不可提现。`,
+					confirmText: '提交申请',
+					success: r => {
+						if (!r.confirm) return
+						const amount = Number((r.content || '').trim() || max)
+						if (!amount || amount <= 0 || amount > max) { uni.showToast({ title: '请输入正确退款金额', icon: 'none' }); return }
+						api.rechargeRefund(amount, '用户从订单页申请储值余额退款').then(() => {
+							uni.showToast({ title: '已提交申请', icon: 'success' })
+							this.load()
+						}).catch(() => {})
+					}
+				})
+			}).catch(() => {})
 		}
 	}
 }
@@ -195,7 +225,7 @@ export default {
 .o-status { font-size: 26rpx; font-weight: 700; color: $ink-3; }
 .o-status.done, .o-status.use, .o-status.pay { color: $brand; }
 .o-status.confirm { color: #C9A24B; }
-.o-status.cancel, .o-status.refund, .o-status.expired { color: $ink-4; }
+.o-status.cancel, .o-status.refund, .o-status.refund_apply, .o-status.refund_reject, .o-status.expired { color: $ink-4; }
 .o-body { display: flex; margin: 24rpx 0; }
 .o-img { width: 130rpx; height: 130rpx; border-radius: $r; overflow: hidden; flex-shrink: 0; }
 .o-c { flex: 1; min-width: 0; padding-left: 22rpx; display: flex; flex-direction: column; }

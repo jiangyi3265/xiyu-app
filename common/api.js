@@ -64,7 +64,7 @@ const normBenefit = b => ({ name: b.name, val: b.val, icon: b.icon })
 
 const ORDER_STATUS_TEXT = {
 	pay: '待支付', confirm: '待确认', use: '待使用', done: '已完成',
-	cancel: '已取消', refund: '全部退款', expired: '已过期'
+	cancel: '已取消', refund_apply: '退款审核中', refund: '已退款', refund_reject: '退款驳回', expired: '已过期'
 }
 const normOrder = o => ({
 	id: o.orderNo, oid: o.orderId, shop: o.shop, status: o.status,
@@ -124,6 +124,8 @@ export const api = {
 	prepayOrder: oid => request({ url: '/app/member/order/' + oid + '/prepay', method: 'PUT' }),
 	useOrder: oid => request({ url: '/app/member/order/' + oid + '/use', method: 'PUT' }),
 	refundOrder: oid => request({ url: '/app/member/order/' + oid + '/refund', method: 'PUT' }),
+	rechargeRefundInfo: () => request({ url: '/app/member/recharge/refund/info', silent: true }),
+	rechargeRefund: (amount, reason) => request({ url: '/app/member/recharge/refund', method: 'POST', data: { amount, reason } }),
 	review: (orderId, content, rating) => request({ url: '/app/member/review', method: 'POST', data: { orderId, content, rating } }),
 	recharge: (rechargeId, qty) => request({ url: '/app/member/recharge', method: 'POST', data: { rechargeId, qty } }),
 	redeem: mallId => request({ url: '/app/member/mall/redeem', method: 'POST', data: { mallId } }),

@@ -35,7 +35,7 @@
 				<text class="a-num">{{ store.coupons }}</text><text class="a-lab">优惠券</text>
 			</view>
 			<view class="a-div"></view>
-			<view class="asset" @tap="go('/pages/recharge/recharge')">
+			<view class="asset" @tap="balanceAction">
 				<text class="a-num">{{ store.balance }}</text><text class="a-lab">储值余额</text>
 			</view>
 		</view>
@@ -114,6 +114,37 @@ export default {
 			return this.orders.filter(o => o.status === m[key]).length
 		},
 		go(url) { url && uni.navigateTo({ url }) },
+		balanceAction() {
+			uni.showActionSheet({
+				itemList: ['去充值', '申请退款'],
+				success: r => {
+					if (r.tapIndex === 0) this.go('/pages/recharge/recharge')
+					if (r.tapIndex === 1) this.applyBalanceRefund()
+				}
+			})
+		},
+		applyBalanceRefund() {
+			api.rechargeRefundInfo().then(info => {
+				const max = Number(info.maxAmount || 0)
+				if (max <= 0) { uni.showToast({ title: '暂无可退储值本金', icon: 'none' }); return }
+				uni.showModal({
+					title: '申请储值退款',
+					editable: true,
+					placeholderText: `最多可退 ${max.toFixed(2)} 元`,
+					content: `最多可退 ¥${max.toFixed(2)}\n赠送金额、赠券和赠送权益不可提现。`,
+					confirmText: '提交申请',
+					success: r => {
+						if (!r.confirm) return
+						const amount = Number((r.content || '').trim() || max)
+						if (!amount || amount <= 0 || amount > max) { uni.showToast({ title: '请输入正确退款金额', icon: 'none' }); return }
+						api.rechargeRefund(amount, '用户从会员中心申请储值余额退款').then(() => {
+							uni.showToast({ title: '已提交申请', icon: 'success' })
+							store.refreshMember().catch(() => {})
+						}).catch(() => {})
+					}
+				})
+			}).catch(() => {})
+		},
 		goOrder(status) { store.orderTab = status || 'all'; uni.switchTab({ url: '/pages/order/order' }) },
 		goService(s) {
 			if (!s.url) { uni.showToast({ title: '功能开发中', icon: 'none' }); return }

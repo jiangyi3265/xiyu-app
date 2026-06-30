@@ -72,7 +72,8 @@ import { store } from '@/common/store.js'
 import { api, wxRequestPayment } from '@/common/api.js'
 const STATUS_HINT = {
 	pay: '请尽快完成支付', confirm: '商家确认中，请耐心等待', use: '可到店出示核销码使用',
-	done: '订单已完成，欢迎再次光临', cancel: '订单已取消', refund: '退款已处理', expired: '订单已过期'
+	done: '订单已完成，欢迎再次光临', cancel: '订单已取消', refund_apply: '退款申请已提交，等待商家审核',
+	refund: '退款已处理', refund_reject: '退款申请未通过，可联系客服', expired: '订单已过期'
 }
 export default {
 	data() { return { o: null } },
@@ -81,12 +82,14 @@ export default {
 		statusHint() { return STATUS_HINT[this.o.status] || '' },
 		discount() { return Math.max(0, (Number(this.o.amount) || 0) - (Number(this.o.payAmount) || 0)) },
 		acts() {
+			if (this.o.kind === 'balance_refund') return []
+			if (this.o.kind === 'recharge' && this.o.status === 'use') return ['申请余额退款']
 			const m = {
 				done: [this.o.reviewed ? '已评价' : '去评价', '删除订单'],
-				use: ['去退款', '去使用'],
+				use: ['申请退款', '去使用'],
 				pay: ['取消', '去支付'],
 				confirm: ['联系客服'],
-				cancel: ['删除订单'], refund: ['删除订单'], expired: ['删除订单']
+				cancel: ['删除订单'], refund_apply: ['联系客服'], refund_reject: ['联系客服'], refund: ['删除订单'], expired: ['删除订单']
 			}
 			return m[this.o.status] || []
 		},
@@ -116,9 +119,13 @@ export default {
 				}})
 				return
 			}
-			if (a === '去退款') {
-				uni.showModal({ title: '申请退款', content: '确认申请退款该订单？', confirmText: '确认退款', success: r => {
-					if (r.confirm) api.refundOrder(o.oid).then(() => this.done('退款成功')).catch(() => {})
+			if (a === '申请余额退款') {
+				this.applyBalanceRefund()
+				return
+			}
+			if (a === '申请退款') {
+				uni.showModal({ title: '申请退款', content: '提交后需商家审核，审核通过后原路退回微信支付金额。', confirmText: '提交申请', success: r => {
+					if (r.confirm) api.refundOrder(o.oid).then(() => this.done('已提交申请')).catch(() => {})
 				}})
 				return
 			}
@@ -142,6 +149,25 @@ export default {
 				}})
 				return
 			}
+		},
+		applyBalanceRefund() {
+			api.rechargeRefundInfo().then(info => {
+				const max = Number(info.maxAmount || 0)
+				if (max <= 0) { uni.showToast({ title: '暂无可退储值本金', icon: 'none' }); return }
+				uni.showModal({
+					title: '申请储值退款',
+					editable: true,
+					placeholderText: `最多可退 ${max.toFixed(2)} 元`,
+					content: `最多可退 ¥${max.toFixed(2)}\n赠送金额、赠券和赠送权益不可提现。`,
+					confirmText: '提交申请',
+					success: r => {
+						if (!r.confirm) return
+						const amount = Number((r.content || '').trim() || max)
+						if (!amount || amount <= 0 || amount > max) { uni.showToast({ title: '请输入正确退款金额', icon: 'none' }); return }
+						api.rechargeRefund(amount, '用户从订单详情申请储值余额退款').then(() => this.done('已提交申请')).catch(() => {})
+					}
+				})
+			}).catch(() => {})
 		}
 	}
 }
@@ -152,7 +178,7 @@ export default {
 .st.pay, .st.use { background: linear-gradient(135deg, #C92B32, #8C141C); }
 .st.confirm { background: linear-gradient(135deg, #D79A36, #A8761E); }
 .st.done { background: linear-gradient(135deg, #2BB14E, #07A33F); }
-.st.cancel, .st.refund, .st.expired { background: linear-gradient(135deg, #8A8A90, #6A6A70); }
+.st.cancel, .st.refund, .st.refund_apply, .st.refund_reject, .st.expired { background: linear-gradient(135deg, #8A8A90, #6A6A70); }
 .st-t { font-size: 40rpx; font-weight: 800; }
 .st-s { display: block; font-size: 24rpx; opacity: .9; margin-top: 12rpx; }
 
