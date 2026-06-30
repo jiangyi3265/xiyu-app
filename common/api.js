@@ -14,7 +14,7 @@ export function wxRequestPayment(pay) {
 			timeStamp: pay.timeStamp,
 			nonceStr: pay.nonceStr,
 			package: pay.package,
-			signType: pay.signType || 'MD5',
+			signType: pay.signType || 'RSA',
 			paySign: pay.paySign,
 			success: () => resolve(true),
 			fail: err => reject(err)
