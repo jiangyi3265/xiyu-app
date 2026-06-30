@@ -39,6 +39,12 @@ export const store = reactive({
 		return this.member
 	},
 
+	async bindWeixinPhone(code) {
+		const r = await api.bindPhone(code)
+		this.applyMember(r.member)
+		return this.member
+	},
+
 	/** 恢复登录态：仅在已有令牌时刷新，不自动登录（未登录返回 false，由页面跳登录页） */
 	async tryResume() {
 		if (!this.token) return false

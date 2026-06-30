@@ -106,6 +106,7 @@ export const api = {
 	/* 会员 */
 	memberInfo: () => request({ url: '/app/member/info', silent: true }),
 	updateProfile: data => request({ url: '/app/member/profile', method: 'PUT', data }),
+	bindPhone: code => request({ url: '/app/member/phone', method: 'POST', data: { code }, silent: true }),
 	orders: (status, kw) => {
 		const data = params({ status: status === 'all' ? '' : status, kw })
 		return request({ url: '/app/member/order/list', data }).then(r => (r.data || []).map(normOrder))

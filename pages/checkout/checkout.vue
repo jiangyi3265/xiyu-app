@@ -24,7 +24,8 @@
 			<view class="li">
 				<lwf-icon name="phone" :size="36" color="#C1272D" :stroke="1.7" />
 				<text class="li-l">手机号</text>
-				<text class="li-v">{{ (member.phone || '').replace('86-','') }}</text>
+				<text v-if="!needBindPhone" class="li-v">{{ displayPhone }}</text>
+				<button v-else class="phone-auth" open-type="getPhoneNumber" @getphonenumber="onGetPhoneNumber">授权手机号</button>
 			</view>
 		</view>
 
@@ -85,6 +86,8 @@ export default {
 	data() { return { member: store.member, store, d: null, coupons: [], couponIdx: -1, usePoints: false, submitting: false, agreed: false } },
 	computed: {
 		sceneIcon() { return this.d && this.d.scene === 'dine' ? 'dish' : (this.d && this.d.scene === 'night' ? 'card' : 'bed') },
+		displayPhone() { return (this.member.phone || '').replace('86-', '') },
+		needBindPhone() { return !/^1\d{10}$/.test(this.displayPhone) },
 		couponable() { return this.coupons.length },
 		coupon() { return this.couponIdx >= 0 && this.coupons[this.couponIdx] ? this.coupons[this.couponIdx].amount : 0 },
 		pointCut() {
@@ -108,6 +111,19 @@ export default {
 			if (this.couponIdx >= 0) uni.showToast({ title: '已选 ¥' + this.coupons[this.couponIdx].amount + ' 优惠券', icon: 'none' })
 		},
 		onPoints(e) { this.usePoints = e.detail.value },
+		async onGetPhoneNumber(e) {
+			const code = e && e.detail && e.detail.code
+			if (!code) {
+				uni.showToast({ title: '未授权手机号', icon: 'none' })
+				return
+			}
+			try {
+				await store.bindWeixinPhone(code)
+				uni.showToast({ title: '手机号已绑定', icon: 'success' })
+			} catch (err) {
+				uni.showToast({ title: (err && err.msg) || '手机号授权失败', icon: 'none' })
+			}
+		},
 		goHome() { uni.switchTab({ url: '/pages/index/index' }) },
 		showTerms() {
 			uni.showModal({
@@ -119,6 +135,7 @@ export default {
 		async submit() {
 			if (this.submitting || !this.d) return
 			if (!this.agreed) { uni.showToast({ title: '请先阅读并同意预订与使用条款', icon: 'none' }); return }
+			if (this.needBindPhone) { uni.showToast({ title: '请先授权手机号', icon: 'none' }); return }
 			this.submitting = true; let r = null
 			try {
 				if (this.d.kind === 'recharge') {
@@ -170,6 +187,8 @@ export default {
 .li-v.red { color: $brand; font-weight: 700; }
 .li-sub { margin-left: auto; font-size: 23rpx; color: $ink-4; margin-right: 12rpx; }
 .li .lwf-icon:last-child { margin-left: 12rpx; }
+.phone-auth { margin-left: auto; padding: 0 24rpx; height: 56rpx; line-height: 56rpx; border-radius: 28rpx; background: $brand; color: #fff; font-size: 24rpx; }
+.phone-auth::after { border: 0; }
 
 .detail { margin: 20rpx 28rpx 0; padding: 28rpx; }
 .dl { display: flex; justify-content: space-between; align-items: center; padding: 12rpx 0; font-size: 26rpx; color: $ink-2; }
